@@ -15,7 +15,7 @@ from Bio.PDB import PDBParser
 from Bio.PDB.Polypeptide import Polypeptide, is_aa, protein_letters_3to1
 
 st.set_page_config(page_title="Protein Sneakoscope", layout="wide")
-st.title("🧬 The Protein Sneakoscope")
+st.title("The Protein Sneakoscope")
 
 # --- 1. INITIALIZE SESSION STATE ---
 # This acts as our "memory" so data doesn't disappear
@@ -150,11 +150,12 @@ def generate_ramachandran_plot(df, title):
     return fig
 
 # --- 3. SIDEBAR CONTROLS ---
-st.sidebar.header("📜 Controls")
+st.sidebar.image("protein-sneakoscope.png", width='stretch')
+st.sidebar.header("Controls")
 uniprot_id = st.sidebar.text_input("Enter UniProt Accession", value="P63000").strip().upper()
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("🛠️ SWISS-MODEL Integration")
+st.sidebar.subheader("SWISS-MODEL Integration")
 st.session_state.swiss_token = st.sidebar.text_input("API Token (Optional)", type="password", help="Get a free token from your SWISS-MODEL account profile.")
 
 if st.sidebar.button("Cast Revelio!"):
@@ -177,7 +178,7 @@ if st.session_state.data_loaded:
     seq_len = st.session_state.seq_len
 
     # A. Mutation Frequency Plot
-    st.subheader("📊 Mutation Frequency per Site")
+    st.subheader("Mutation Frequency per Site")
     freq_df = var_df['position'].value_counts().reset_index()
     freq_df.columns = ['position', 'count']
     fig_freq = px.bar(freq_df.sort_values('position'), x='position', y='count', color_discrete_sequence=['#636EFA'])
@@ -186,7 +187,7 @@ if st.session_state.data_loaded:
 
 # B. Interactive Feature Map (Fixed Y-Axis and Range)
     if feat_df is not None:
-        st.subheader("🗺️ Feature Map: Site Architecture")
+        st.subheader("Feature Map: Site Architecture")
         all_types = sorted(feat_df['type'].unique().tolist())
         selected_types = st.sidebar.multiselect("Select Features to Reveal:", all_types, default=all_types[:3])
         
@@ -243,7 +244,7 @@ if st.session_state.data_loaded:
 
     # C. Pathogenicity Plot
     if am_df is not None:
-        st.subheader("🎯 Pathogenicity Analysis")
+        st.subheader("Pathogenicity Analysis")
         merged_df = pd.merge(var_df, am_df, on='protein_variant', how='inner')
         fig_patho = px.scatter(merged_df, x='position', y='am_pathogenicity', color='am_class',
                                color_discrete_map={'likely_benign': 'green', 'ambiguous': 'grey', 'likely_pathogenic': 'red'})
@@ -252,7 +253,7 @@ if st.session_state.data_loaded:
         st.plotly_chart(fig_patho, use_container_width=True)
 
     # D. Mutation Selection and Alignment
-    st.subheader("✂️ Mutation Constructor & Alignment")
+    st.subheader("Mutation Constructor & Alignment")
     ref_seq = st.session_state.sequence
     if ref_seq and var_df is not None and not var_df.empty:
         available_variants = sorted(var_df['protein_variant'].dropna().unique())
@@ -274,7 +275,7 @@ if st.session_state.data_loaded:
         mutated_seq = "".join(mutated_seq_list)
         
         if mutations_applied:
-            st.markdown("### 🔮 AlphaMissense Consequence Predictions")
+            st.markdown("### AlphaMissense Consequence Predictions")
             am_df = st.session_state.get('am_df')
             if am_df is not None and isinstance(am_df, pd.DataFrame) and not am_df.empty:
                 for var in mutations_applied:
@@ -319,7 +320,7 @@ if st.session_state.data_loaded:
             
             # --- SWISS-MODEL INTEGRATION ---
             st.markdown("---")
-            st.subheader("🧬 3D Structure Prediction")
+            st.subheader("3D Structure Prediction")
             if st.button("Generate 3D Model with SWISS-MODEL"):
                 if not st.session_state.swiss_token:
                     st.error("Please enter your SWISS-MODEL API Token in the sidebar first.")
@@ -403,7 +404,7 @@ if st.session_state.data_loaded:
                             
             # Display 3D comparison if available
             if 'mut_pdb_text' in st.session_state and 'af_pdb_text' in st.session_state:
-                st.markdown("### 🔍 Interactive 3D Comparison")
+                st.markdown("### Interactive 3D Comparison")
                 st.markdown("**(Left: AlphaFold Wild-Type | Right: Mutated SWISS-MODEL)**")
                 st.info("Colored by pLDDT (B-factor). Red: low confidence, Blue: high confidence. Rotate with your mouse to sync both views.")
                 
@@ -433,7 +434,7 @@ if st.session_state.data_loaded:
                     st_molstar(tmp2_path, height='500px', key='mut_molstar')
 
                 # --- RAMACHANDRAN PLOTS ---
-                st.markdown("### 📈 Structure Quality Assessment (Ramachandran)")
+                st.markdown("### Structure Quality Assessment (Ramachandran)")
                 rc1, rc2 = st.columns(2)
                 with rc1:
                     df_wt = get_ramachandran_df(st.session_state.af_pdb_text, "WT")
