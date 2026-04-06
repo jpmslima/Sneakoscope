@@ -1,10 +1,10 @@
-# 🧬 Sneakoscope: README
+# Sneakoscope: README
 
 The **Sneakoscope** is a comprehensive Streamlit-based web application designed for protein variant analysis, pathogenicity prediction, and 3D structural modeling. It integrates data from UniProt, AlphaMissense, and SWISS-MODEL to provide an interactive dashboard for researchers to explore how specific mutations might affect protein structure and function.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 ### 1. Data Integration & Visualization
 * **Multi-Source Fetching:** Automatically retrieves protein features and variation data from the EBI Proteins API.
@@ -25,7 +25,7 @@ The **Sneakoscope** is a comprehensive Streamlit-based web application designed 
 
 ---
 
-## 🛠️ Technical Architecture
+## Technical Architecture
 
 ### Core Libraries
 | Library | Purpose |
@@ -44,7 +44,7 @@ The **Sneakoscope** is a comprehensive Streamlit-based web application designed 
 
 ---
 
-## 🚦 Getting Started
+## Getting Started
 
 ### Prerequisites
 * Python 3.8+
@@ -62,7 +62,7 @@ pip install streamlit pandas requests plotly biopython streamlit-molstar
 
 ---
 
-## 📝 Important Notes
+## Important Notes
 * **Caching:** The app uses `@st.cache_data` to ensure that repeated queries for the same protein ID are instant and do not overload external APIs.
 * **pLDDT Coloring:** Structure visualizations use a standard color scale where Blue indicates high confidence ($>90$) and Red indicates low confidence ($<50$).
 * **Asynchronous Jobs:** SWISS-MODEL jobs are polled every 10 seconds until completion or failure.
