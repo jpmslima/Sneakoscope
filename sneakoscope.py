@@ -157,7 +157,7 @@ uniprot_id = st.sidebar.text_input("Enter UniProt Accession", value="P63000").st
 st.sidebar.markdown("---")
 st.sidebar.subheader("SWISS-MODEL Integration")
 st.session_state.swiss_token = st.sidebar.text_input("API Token (Optional)", type="password", help="Get a free token from your SWISS-MODEL account profile.")
-
+st.sidebar.text_input("To get a SWISS-MODEL API token, sign up for a free account at their website https://swissmodel.expasy.org, go to your profile section, and search for your API")
 if st.sidebar.button("Cast Revelio!"):
     with st.spinner("Consulting the Great Library..."):
         v, a, f, s, seq = fetch_all_data(uniprot_id)
